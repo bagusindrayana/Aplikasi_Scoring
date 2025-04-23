@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.form.FormActivity">
+
+    <!-- Toolbar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="@drawable/arrow_back"
+        app:title="Form"
+        app:titleTextAppearance="@style/CustomArrowBack"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- CardView -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="5dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="6dp"
+        android:alpha="0.8"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:gravity="center_horizontal">
+
+            <!-- Gambar -->
+            <ImageView
+                android:id="@+id/logooo"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:scaleType="fitCenter"
+                android:alpha="0.7"
+                android:src="@drawable/logo_aplikasimentah" />
+
+            <!-- Tanggal -->
+            <TextView
+                android:id="@+id/tanggal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Tanggal tidak diketahui"
+                android:textSize="16sp"
+                android:textColor="@color/blue"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Text Field 1 -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textdescription"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:hint="Deskripsi Kegiatan"
+        app:layout_constraintTop_toBottomOf="@id/cardview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:boxStrokeColor="@color/blue"
+        android:textColorHint="@color/blue"
+        app:startIconDrawable="@drawable/info"
+        app:startIconTint="@color/blue"
+        android:layout_marginTop="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            android:textSize="16sp"
+            android:paddingStart="48dp"
+            android:fontFamily="@font/poppins_medium"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/linearperson"
+        android:padding="12dp"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/textdescription"
+        app:layout_constraintStart_toStartOf="@+id/textdescription">
+
+        <!-- Button untuk membuka popup -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/person"
+            android:layout_width="wrap_content"
+            android:layout_height="47dp"
+            android:backgroundTint="@color/blue"
+            android:icon="@drawable/person"
+            android:iconTint="@android:color/white"
+            android:text="Orang"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+
+            app:cornerRadius="16dp"
+            app:iconGravity="textStart"
+            app:iconSize="24dp" />
+
+        <!-- TextView untuk menampilkan nama yang dipilih -->
+        <TextView
+            android:id="@+id/selectedNames"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Tidak ada yang dipilih"
+            android:textSize="16sp"
+            android:textColor="@color/blue"
+            android:fontFamily="@font/poppins_medium"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sessionContainer"
+        android:layout_width="378dp"
+        android:layout_height="91dp"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearperson">
+
+        <!-- Session (Kiri) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textsession"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Rambahan"
+            android:textColorHint="@color/blue"
+            app:boxStrokeColor="@color/blue"
+            app:startIconDrawable="@drawable/time"
+            app:startIconTint="@color/blue">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/session"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:paddingStart="48dp"
+                android:layout_gravity="center"
+                android:textColor="@color/blue"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Score (Kanan) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textscore"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Anak Panah"
+            android:textColorHint="@color/blue"
+            app:boxStrokeColor="@color/blue"
+            app:startIconDrawable="@drawable/end"
+            app:startIconTint="@color/blue">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/score"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:paddingStart="48dp"
+                android:layout_gravity="center"
+                android:textColor="@color/blue"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/Next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="40dp"
+        android:backgroundTint="@color/blue"
+        android:text="Lanjut"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:cornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/sessionContainer" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
