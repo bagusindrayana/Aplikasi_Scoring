@@ -39,6 +39,9 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
     private var trainingIdInt: Int = 0
     private var currentEditText: EditText? = null
     private lateinit var customKeyboard: CustomKeyboard
+    private lateinit var textDescription: TextView
+    private lateinit var textRambahan: TextView
+    private lateinit var textAnakPanah: TextView
 
     private lateinit var dataViewModel: DataViewModel
     private val allScores = mutableMapOf<Triple<Int, Int, Int>, Int>()
@@ -51,6 +54,11 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_data)
+
+        textDescription = findViewById(R.id.textdescription)
+        textRambahan = findViewById(R.id.textrambahan)
+        textAnakPanah = findViewById(R.id.textanakpanah)
+        customKeyboard = findViewById(R.id.custom_keyboard)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
@@ -72,6 +80,12 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
         val token = intent.getStringExtra("token")?.toString() ?: "No Data"
         val trainingid = intent.getStringExtra("trainingid") ?: "No Data"
         trainingIdInt = trainingid.toIntOrNull() ?: 0
+
+        // Display data in TextViews
+        textDescription.text = "$description - $date"
+        textRambahan.text = "$session"
+        textAnakPanah.text = "$score"
+
 
         Log.d("DataActivity", "Selected Names: $selectedNames")
         Log.d("DataActivity", "Session: $session")
@@ -99,7 +113,7 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
             val titleTextView = TextView(this).apply {
                 text = "Skor - $name"
                 textSize = 18f
-                setTextColor(Color.BLACK)
+                setTextColor(Color.WHITE)
                 setTypeface(null, Typeface.BOLD)
                 //gravity = Gravity.CENTER
                 setPadding(0, 10, 0, 10)
@@ -153,7 +167,7 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
         var allFilled = true
         for (editText in allEditTexts) {
             if (editText.text.toString().trim().isEmpty()) {
-                editText.setBackgroundColor(Color.parseColor("#FFCCCC"))
+                editText.setBackgroundColor(Color.parseColor("#A04747"))
                 allFilled = false
             } else {
                 editText.setBackgroundColor(Color.WHITE)
@@ -289,7 +303,7 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
 
         val headerBackground = GradientDrawable().apply {
             shape = GradientDrawable.RECTANGLE
-            setColor(ContextCompat.getColor(this@DataActivity, R.color.grey)) // Menggunakan color resource grey
+            setColor(ContextCompat.getColor(this@DataActivity, R.color.grey))
             cornerRadius = 8f
         }
 
@@ -318,8 +332,8 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
         val totalTextViews = mutableListOf<TextView>()
         val endTextViews = mutableListOf<TextView>()
 
-        val evenRowColor = Color.parseColor("#F5F5F5")
-        val oddRowColor = Color.WHITE
+        val evenRowColor = Color.parseColor("#3C3D37")
+        val oddRowColor = Color.parseColor("#3C3D37")
 
         for (i in 1..rows) {
             val tableRow = TableRow(this).apply {
@@ -343,7 +357,7 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
                         val sessionTextView = TextView(this).apply {
                             text = i.toString()
                             gravity = Gravity.CENTER
-                            setTextColor(Color.BLACK)
+                            setTextColor(Color.WHITE)
                             typeface = Typeface.DEFAULT_BOLD
                             setPadding(20, 16, 20, 16)
                             background = cellBackground
@@ -367,11 +381,12 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
                             background = totalCellBackground
 
                             val params = TableRow.LayoutParams(
-                                TableRow.LayoutParams.WRAP_CONTENT,
-                                TableRow.LayoutParams.WRAP_CONTENT
+                                TableRow.LayoutParams.MATCH_PARENT,
+                                TableRow.LayoutParams.MATCH_PARENT
                             )
                             params.setMargins(4, 2, 0, 2)
                             layoutParams = params
+                            minimumWidth = 80
                         }
                         tableRow.addView(totalTextView)
                         totalTextViews.add(totalTextView)
@@ -393,11 +408,12 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
                             background = endCellBackground
 
                             val params = TableRow.LayoutParams(
-                                TableRow.LayoutParams.WRAP_CONTENT,
-                                TableRow.LayoutParams.WRAP_CONTENT
+                                TableRow.LayoutParams.MATCH_PARENT,
+                                TableRow.LayoutParams.MATCH_PARENT
                             )
                             params.setMargins(4, 2, 0, 2)
                             layoutParams = params
+                            minimumWidth = 80
                         }
                         tableRow.addView(endTextView)
                         endTextViews.add(endTextView)

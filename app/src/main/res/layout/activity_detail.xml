@@ -32,13 +32,15 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:padding="10dp">
+            android:background="@color/grey"
+            android:padding="14dp">
 
             <TextView
                 android:id="@+id/rankingTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Peringkat"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +50,7 @@
                 android:id="@+id/exportButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#673AB7"
+                android:backgroundTint="@color/gold"
                 android:text="Export Ke Excel"
                 android:textColor="#FFFFFF"
                 app:cornerRadius="8dp"
@@ -89,13 +91,15 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/grey">
 
             <LinearLayout
                 android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:background="@color/grey"
                 android:padding="8dp" />
         </ScrollView>
     </androidx.cardview.widget.CardView>

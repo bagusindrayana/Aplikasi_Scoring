@@ -28,7 +28,7 @@ class DetailAdapter(private val viewModel: DetailViewModel) :
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Leaderboard) {
             binding.rankNumber.text = "${item.the_champion}"
-            binding.scoreText.text = "Skor Akhir: ${item.score}"
+            binding.scoreText.text = "Skor : ${item.score}"
 
             item.person_id?.let {
                 viewModel.getNamePerson(it).observeForever { name ->

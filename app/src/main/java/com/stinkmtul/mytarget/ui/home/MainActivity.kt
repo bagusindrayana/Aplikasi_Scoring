@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.stinkmtul.mytarget.MenuActivity
 import com.stinkmtul.mytarget.data.databases.entity.training.Training
 import com.stinkmtul.mytarget.databinding.ActivityMainBinding
 import com.stinkmtul.mytarget.ui.detail.DetailActivity
@@ -59,9 +58,9 @@ class MainActivity : AppCompatActivity() {
             closeFABMenu()
         }
 
-        binding.menu.setOnClickListener {
+        /*binding.menu.setOnClickListener {
             startActivity(Intent(this, MenuActivity::class.java))
-        }
+        }*/
     }
 
     private fun setupRecyclerView() {

@@ -1,9 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.MyTarget" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/semiblack</item>
+        <item name="colorPrimaryVariant">@color/semiblack</item>
+        <item name="colorOnPrimary">@color/gold</item>
+        <item name="android:windowBackground">@color/semiblack</item>
     </style>
-
     <style name="Theme.MyTarget" parent="Base.Theme.MyTarget" />
 </resources>

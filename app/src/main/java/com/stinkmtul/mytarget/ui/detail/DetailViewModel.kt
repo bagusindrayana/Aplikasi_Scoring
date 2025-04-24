@@ -84,7 +84,6 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
                     styles,
                     shots,
                     personName,
-                    personId,
                     currentRow,
                     ranking
                 )
@@ -115,7 +114,6 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
         styles: Map<String, XSSFCellStyle>,
         shots: List<Shot>,
         personName: String,
-        personId: Int,
         startRow: Int,
         ranking: Int = 0
     ): Int {
@@ -127,7 +125,7 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
         if (sessions.isEmpty()) {
             val personHeaderRow = sheet.createRow(currentRow++)
             val personHeaderCell = personHeaderRow.createCell(0)
-            personHeaderCell.setCellValue("Rank #$ranking - $personName")
+            personHeaderCell.setCellValue("Rank $ranking - $personName")
             personHeaderCell.cellStyle = styles["header"]
 
             val noDataRow = sheet.createRow(currentRow++)

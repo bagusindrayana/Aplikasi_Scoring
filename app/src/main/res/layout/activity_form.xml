@@ -13,21 +13,21 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:navigationIcon="@drawable/arrow_back"
-        app:title="Form"
+        app:title="Form Kegiatan"
         app:titleTextAppearance="@style/CustomArrowBack"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <!-- CardView -->
+    <!-- Single CardView for all content including button -->
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardview"
+        android:id="@+id/mainCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="16dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="6dp"
-        android:alpha="0.8"
+        android:alpha="0.9"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -36,169 +36,201 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:gravity="center_horizontal">
+            android:background="@color/grey">
 
-            <!-- Gambar -->
-            <ImageView
-                android:id="@+id/logooo"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:scaleType="fitCenter"
-                android:alpha="0.7"
-                android:src="@drawable/logo_aplikasimentah" />
-
-            <!-- Tanggal -->
-            <TextView
-                android:id="@+id/tanggal"
-                android:layout_width="wrap_content"
+            <!-- Main content padding -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Tanggal tidak diketahui"
-                android:textSize="16sp"
-                android:textColor="@color/blue"
-                android:fontFamily="@font/poppins_bold"
-                android:gravity="center"/>
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Logo and Date Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="16dp">
+
+                    <!-- Gambar -->
+                    <ImageView
+                        android:id="@+id/logooo"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:scaleType="fitCenter"
+                        android:alpha="0.7"
+                        android:src="@drawable/logo_aplikasimentah" />
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Gold Archery Samarinda"
+                        android:textSize="14sp"
+                        android:textColor="#80FFFFFF"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center"/>
+
+                    <!-- Tanggal -->
+                    <TextView
+                        android:id="@+id/tanggal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Tanggal tidak diketahui"
+                        android:textSize="16sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gold"
+                    android:alpha="0.3"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Form Fields Section -->
+                <!-- Text Field 1 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textdescription"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Deskripsi Kegiatan"
+                    app:boxStrokeColor="@color/gold"
+                    android:textColorHint="@color/white"
+                    app:startIconDrawable="@drawable/info"
+                    app:startIconTint="@color/gold">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/gold"
+                        android:textSize="16sp"
+                        android:paddingStart="48dp"
+                        android:fontFamily="@font/poppins_medium"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Person Selection -->
+                <LinearLayout
+                    android:id="@+id/linearperson"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="16dp">
+
+                    <!-- Button untuk membuka popup -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/person"
+                        android:layout_width="wrap_content"
+                        android:layout_height="47dp"
+                        android:backgroundTint="@color/gold"
+                        android:icon="@drawable/person"
+                        android:text="Orang"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        app:cornerRadius="16dp"
+                        app:iconGravity="textStart"
+                        app:iconSize="24dp" />
+
+                    <!-- TextView untuk menampilkan nama yang dipilih -->
+                    <TextView
+                        android:id="@+id/selectedNames"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="Tidak ada yang dipilih"
+                        android:textSize="16sp"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/poppins_medium"/>
+                </LinearLayout>
+
+                <!-- Session and Score Container -->
+                <LinearLayout
+                    android:id="@+id/sessionContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp">
+
+                    <!-- Session (Kiri) -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textsession"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:hint="Rambahan"
+                        android:textColorHint="@color/white"
+                        app:boxStrokeColor="@color/gold"
+                        app:startIconDrawable="@drawable/time"
+                        app:startIconTint="@color/gold">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/session"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_medium"
+                            android:paddingStart="48dp"
+                            android:textColor="@color/gold"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Score (Kanan) -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textscore"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:hint="Anak Panah"
+                        android:textColorHint="@color/white"
+                        app:boxStrokeColor="@color/gold"
+                        app:startIconDrawable="@drawable/end"
+                        app:startIconTint="@color/gold">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/score"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_medium"
+                            android:paddingStart="48dp"
+                            android:textColor="@color/gold"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <!-- Tambahkan spacing/ruang di sini -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp" />
+            </LinearLayout>
+
+            <!-- Next Button - Full Width at bottom of card with no padding -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/Next"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/gold"
+                android:minHeight="48dp"
+                android:text="Simpan"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:cornerRadius="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
-    <!-- Text Field 1 -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textdescription"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:hint="Deskripsi Kegiatan"
-        app:layout_constraintTop_toBottomOf="@id/cardview"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:boxStrokeColor="@color/blue"
-        android:textColorHint="@color/blue"
-        app:startIconDrawable="@drawable/info"
-        app:startIconTint="@color/blue"
-        android:layout_marginTop="16dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/blue"
-            android:textSize="16sp"
-            android:paddingStart="48dp"
-            android:fontFamily="@font/poppins_medium"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <LinearLayout
-        android:id="@+id/linearperson"
-        android:padding="12dp"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/textdescription"
-        app:layout_constraintStart_toStartOf="@+id/textdescription">
-
-        <!-- Button untuk membuka popup -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/person"
-            android:layout_width="wrap_content"
-            android:layout_height="47dp"
-            android:backgroundTint="@color/blue"
-            android:icon="@drawable/person"
-            android:iconTint="@android:color/white"
-            android:text="Orang"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-
-            app:cornerRadius="16dp"
-            app:iconGravity="textStart"
-            app:iconSize="24dp" />
-
-        <!-- TextView untuk menampilkan nama yang dipilih -->
-        <TextView
-            android:id="@+id/selectedNames"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:text="Tidak ada yang dipilih"
-            android:textSize="16sp"
-            android:textColor="@color/blue"
-            android:fontFamily="@font/poppins_medium"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/sessionContainer"
-        android:layout_width="378dp"
-        android:layout_height="91dp"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearperson">
-
-        <!-- Session (Kiri) -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textsession"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Rambahan"
-            android:textColorHint="@color/blue"
-            app:boxStrokeColor="@color/blue"
-            app:startIconDrawable="@drawable/time"
-            app:startIconTint="@color/blue">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/session"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_medium"
-                android:paddingStart="48dp"
-                android:layout_gravity="center"
-                android:textColor="@color/blue"
-                android:textSize="14sp" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Score (Kanan) -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textscore"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Anak Panah"
-            android:textColorHint="@color/blue"
-            app:boxStrokeColor="@color/blue"
-            app:startIconDrawable="@drawable/end"
-            app:startIconTint="@color/blue">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/score"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_medium"
-                android:paddingStart="48dp"
-                android:layout_gravity="center"
-                android:textColor="@color/blue"
-                android:textSize="14sp" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/Next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="40dp"
-        android:backgroundTint="@color/blue"
-        android:text="Lanjut"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:cornerRadius="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintTop_toBottomOf="@+id/sessionContainer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
