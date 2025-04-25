@@ -100,21 +100,18 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
         allEditTexts.clear()
 
         //satu tabel satu orang
-        // Inside the selectedNames.forEachIndexed loop where you create tables for each person
         selectedNames.forEachIndexed { index, name ->
             val personId = selectedPersonIds.getOrElse(index) { 0 }
 
             nameMapping[personId] = name
 
-            // Create a container for this person's table section with margins
             val personContainer = LinearLayout(this).apply {
                 orientation = LinearLayout.VERTICAL
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply {
-                    // Add significant bottom margin (32dp) between each person's table
-                    setMargins(0, 0, 0, 90) // 90dp is quite large spacing
+                    setMargins(0, 0, 0, 90)
                 }
             }
 
