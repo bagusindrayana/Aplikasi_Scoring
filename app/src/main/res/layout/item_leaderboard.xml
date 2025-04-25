@@ -35,7 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/rankNumber"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Orang -> 40" />
+        tools:text="Orang" />
 
     <TextView
         android:id="@+id/scoreText"
@@ -44,7 +44,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
         android:textColor="@color/gold"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/rankNumber"
@@ -55,7 +55,7 @@
         android:id="@+id/garis"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="2dp"
         android:background="@color/grey"
         app:layout_constraintTop_toBottomOf="@id/scoreText"
         app:layout_constraintStart_toStartOf="parent"

@@ -17,6 +17,7 @@ import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.HorizontalScrollView
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TableLayout
 import android.widget.TableRow
@@ -42,6 +43,7 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
     private lateinit var textDescription: TextView
     private lateinit var textRambahan: TextView
     private lateinit var textAnakPanah: TextView
+    private lateinit var arrowback: ImageView
 
     private lateinit var dataViewModel: DataViewModel
     private val allScores = mutableMapOf<Triple<Int, Int, Int>, Int>()
@@ -59,6 +61,12 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
         textRambahan = findViewById(R.id.textrambahan)
         textAnakPanah = findViewById(R.id.textanakpanah)
         customKeyboard = findViewById(R.id.custom_keyboard)
+
+        arrowback = findViewById(R.id.btn_back)
+
+        arrowback.setOnClickListener {
+            onBackPressed()
+        }
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 

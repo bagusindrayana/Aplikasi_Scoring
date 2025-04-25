@@ -141,7 +141,8 @@
                                         android:layout_height="wrap_content"
                                         android:text="4"
                                         android:textColor="@color/white"
-                                        android:textSize="16sp" />
+                                        android:textSize="16sp"
+                                        android:textStyle="bold"/>
                                 </LinearLayout>
                             </LinearLayout>
 
@@ -169,13 +170,14 @@
                                         android:layout_height="wrap_content"
                                         android:text="Anak Panah"
                                         android:textColor="@color/gold"
-                                        android:textSize="12sp" />
+                                        android:textSize="12sp"/>
 
                                     <TextView
                                         android:id="@+id/textanakpanah"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="12"
+                                        android:textStyle="bold"
                                         android:textColor="@color/white"
                                         android:textSize="16sp" />
                                 </LinearLayout>
@@ -260,8 +262,9 @@
         android:layout_marginBottom="4dp"
         android:backgroundTint="@color/gold"
         android:iconTint="@android:color/white"
-        android:minHeight="48dp"
+        android:minHeight="50dp"
         android:text="Simpan"
+        android:textStyle="bold"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:cornerRadius="16dp"
@@ -279,4 +282,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
