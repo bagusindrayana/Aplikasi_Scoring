@@ -86,7 +86,6 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
         textRambahan.text = "$session"
         textAnakPanah.text = "$score"
 
-
         Log.d("DataActivity", "Selected Names: $selectedNames")
         Log.d("DataActivity", "Session: $session")
         Log.d("DataActivity", "Score: $score")
@@ -101,10 +100,23 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
         allEditTexts.clear()
 
         //satu tabel satu orang
+        // Inside the selectedNames.forEachIndexed loop where you create tables for each person
         selectedNames.forEachIndexed { index, name ->
             val personId = selectedPersonIds.getOrElse(index) { 0 }
 
             nameMapping[personId] = name
+
+            // Create a container for this person's table section with margins
+            val personContainer = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    // Add significant bottom margin (32dp) between each person's table
+                    setMargins(0, 0, 0, 90) // 90dp is quite large spacing
+                }
+            }
 
             val scrollView = HorizontalScrollView(this)
             val tableLayout = TableLayout(this)
@@ -115,12 +127,15 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
                 textSize = 18f
                 setTextColor(Color.WHITE)
                 setTypeface(null, Typeface.BOLD)
-                //gravity = Gravity.CENTER
                 setPadding(0, 10, 0, 10)
             }
 
-            container.addView(titleTextView)
-            container.addView(scrollView)
+            // Add components to the person container instead of directly to the main container
+            personContainer.addView(titleTextView)
+            personContainer.addView(scrollView)
+
+            // Add the complete person container to the main container
+            container.addView(personContainer)
 
             Log.d("DataActivity", "Creating table for: $name (Person ID: $personId)")
 

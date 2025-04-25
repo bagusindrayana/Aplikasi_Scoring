@@ -35,7 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/rankNumber"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Orang" />
+        tools:text="Orang -> 40" />
 
     <TextView
         android:id="@+id/scoreText"

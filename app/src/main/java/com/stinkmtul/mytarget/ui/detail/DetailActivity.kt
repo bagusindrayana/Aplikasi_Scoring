@@ -13,7 +13,6 @@ import android.os.Environment
 import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
-import android.view.View
 import android.widget.Button
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
@@ -138,8 +137,8 @@ class DetailActivity : AppCompatActivity() {
                 setMargins(0, 0, 0, 24)
             }
             radius = 16f
-            cardElevation = 8f
-            setCardBackgroundColor(Color.WHITE)
+            //cardElevation = 8f
+            setCardBackgroundColor(Color.parseColor("#343131"))
         }
 
         val cardContent = LinearLayout(this).apply {
@@ -152,9 +151,9 @@ class DetailActivity : AppCompatActivity() {
         }
 
         val titleTextView = TextView(this).apply {
-            text = "Rank #$ranking - $personName"
+            text = "Rank $ranking - $personName"
             textSize = 18f
-            setTextColor(Color.BLACK)
+            setTextColor(Color.WHITE)
             setTypeface(null, Typeface.BOLD)
             gravity = Gravity.START
             setPadding(8, 8, 8, 16)
@@ -209,8 +208,8 @@ class DetailActivity : AppCompatActivity() {
         }
         tableLayout.addView(headerRow)
 
-        val evenRowColor = Color.parseColor("#F5F5F5")
-        val oddRowColor = Color.WHITE
+        val evenRowColor = Color.parseColor("#3C3D37")
+        val oddRowColor = Color.parseColor("#3C3D37")
 
         for (session in 1..sessionCount) {
             val tableRow = TableRow(this).apply {
@@ -230,7 +229,7 @@ class DetailActivity : AppCompatActivity() {
             val sessionTextView = TextView(this).apply {
                 text = session.toString()
                 gravity = Gravity.CENTER
-                setTextColor(Color.BLACK)
+                setTextColor(Color.WHITE)
                 typeface = Typeface.DEFAULT_BOLD
                 setPadding(20, 16, 20, 16)
                 background = cellBackground
@@ -313,18 +312,18 @@ class DetailActivity : AppCompatActivity() {
             tableLayout.addView(tableRow)
         }
 
-        val divider = View(this).apply {
+        /*val divider = View(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 2
             )
             setBackgroundColor(Color.LTGRAY)
-        }
+        }*/
 
         scrollView.addView(tableLayout)
         cardContent.addView(titleTextView)
         cardContent.addView(scrollView)
-        cardContent.addView(divider)
+        //cardContent.addView(divider)
         cardView.addView(cardContent)
 
         cardView.tag = ranking

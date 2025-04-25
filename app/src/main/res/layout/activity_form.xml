@@ -104,18 +104,20 @@
                     android:hint="Deskripsi Kegiatan"
                     app:boxStrokeColor="@color/gold"
                     android:textColorHint="@color/white"
-                    app:startIconDrawable="@drawable/info"
-                    app:startIconTint="@color/gold">
+                    app:hintTextColor="@color/gold"
+                    app:startIconTint="@color/gold"
+                    app:startIconDrawable="@drawable/info">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/gold"
-                        android:textSize="16sp"
-                        android:paddingStart="48dp"
-                        android:fontFamily="@font/poppins_medium"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gold"
+                    android:textColorHint="@color/gold"
+                    android:textSize="16sp"
+                    android:paddingStart="48dp"
+                    android:fontFamily="@font/poppins_medium"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Person Selection -->
                 <LinearLayout
@@ -169,10 +171,11 @@
                         android:layout_weight="1"
                         android:layout_marginEnd="8dp"
                         android:hint="Rambahan"
-                        android:textColorHint="@color/white"
                         app:boxStrokeColor="@color/gold"
-                        app:startIconDrawable="@drawable/time"
-                        app:startIconTint="@color/gold">
+                        android:textColorHint="@color/white"
+                        app:hintTextColor="@color/gold"
+                        app:startIconTint="@color/gold"
+                        app:startIconDrawable="@drawable/time">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/session"
@@ -181,6 +184,7 @@
                             android:fontFamily="@font/poppins_medium"
                             android:paddingStart="48dp"
                             android:textColor="@color/gold"
+                            android:textColorHint="@color/gold"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -193,10 +197,11 @@
                         android:layout_weight="1"
                         android:layout_marginStart="8dp"
                         android:hint="Anak Panah"
-                        android:textColorHint="@color/white"
                         app:boxStrokeColor="@color/gold"
-                        app:startIconDrawable="@drawable/end"
-                        app:startIconTint="@color/gold">
+                        android:textColorHint="@color/white"
+                        app:hintTextColor="@color/gold"
+                        app:startIconTint="@color/gold"
+                        app:startIconDrawable="@drawable/end">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/score"
@@ -205,6 +210,7 @@
                             android:fontFamily="@font/poppins_medium"
                             android:paddingStart="48dp"
                             android:textColor="@color/gold"
+                            android:textColorHint="@color/gold"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
