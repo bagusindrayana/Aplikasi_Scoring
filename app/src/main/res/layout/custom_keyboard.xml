@@ -179,7 +179,7 @@
             app:iconGravity="textStart"
             app:iconPadding="0dp"
             app:cornerRadius="16dp"
-            app:backgroundTint="#4285F4" />
+            app:backgroundTint="#444444" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

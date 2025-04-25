@@ -127,11 +127,9 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
                 setPadding(0, 10, 0, 10)
             }
 
-            // Add components to the person container instead of directly to the main container
             personContainer.addView(titleTextView)
             personContainer.addView(scrollView)
 
-            // Add the complete person container to the main container
             container.addView(personContainer)
 
             Log.d("DataActivity", "Creating table for: $name (Person ID: $personId)")
