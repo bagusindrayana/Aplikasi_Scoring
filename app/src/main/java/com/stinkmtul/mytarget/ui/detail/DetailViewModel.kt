@@ -91,6 +91,72 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
                 currentRow++
             }
 
+            //sheet 2
+            val sheet2 = workbook.createSheet("Score_$trainingId")
+
+            var currentRow2 = 0
+            val titleRow2 = sheet2.createRow(currentRow2++)
+            val titleCell2 = titleRow2.createCell(0)
+            titleCell2.setCellValue("Score #$trainingId")
+            titleCell2.cellStyle = styles["header"]
+
+            //table header
+            val headerRow2 = sheet2.createRow(currentRow2++)
+            val headers2 = mutableListOf("No", "Nama")
+
+            //get session_count
+            val trainingCount : TrainingCounts = trainingRepository.getTrainingCountsSync(trainingId)
+
+            for (sessionNumber in 1..trainingCount.shot_count){
+                headers2.add("Rambahan $sessionNumber")
+
+            }
+
+            headers2.add("Total")
+
+            headers2.forEachIndexed { index, header ->
+                val cell = headerRow2.createCell(index)
+                cell.setCellValue(header)
+                cell.cellStyle = styles["columnHeader"]
+            }
+
+            var no = 1
+            for (leaderboard in leaderboardEntries) {
+                val newRow = sheet2.createRow(currentRow2++)
+
+                val personId = leaderboard.person_id ?: 0
+                val personName = personRepository.getNamePersonSync(personId) ?: "Unknown"
+
+                val noCell = newRow.createCell(0)
+                noCell.setCellValue(no.toDouble())
+                noCell.cellStyle = styles["center"]
+
+                val nameCell = newRow.createCell(1)
+                nameCell.setCellValue(personName)
+                nameCell.cellStyle = styles["center"]
+
+                val shots = shotRepository.getShotsForPersonSync(personId, trainingId)
+
+                var totalScore = 0
+                for (sessionNumber in 1..trainingCount.session_count){
+                    var score = 0
+                    for (shootNumber in 1..trainingCount.shot_count){
+                        score += shots.find { shot -> shot.session == sessionNumber && shot.shot_number == shootNumber }?.score ?: 0
+                    }
+                    val sessionCell = newRow.createCell(sessionNumber+1)
+                    sessionCell.setCellValue("${score}")
+                    sessionCell.cellStyle = styles["center"]
+                    totalScore += score
+                }
+
+
+                val totalCell = newRow.createCell(trainingCount.session_count+2)
+                totalCell.setCellValue(totalScore.toDouble())
+                totalCell.cellStyle = styles["center"]
+                no++
+
+            }
+
             val fileName = "Training_${trainingId}_Export.xlsx"
             val file = File(context.getExternalFilesDir(null), fileName)
 

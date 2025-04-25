@@ -42,4 +42,7 @@ interface TrainingDao{
 
     @Query("SELECT session_count, shot_count FROM Training WHERE training_id = :trainingId")
     fun getTrainingCounts(trainingId: Int): LiveData<TrainingCounts>
+
+    @Query("SELECT session_count, shot_count FROM Training WHERE training_id = :trainingId")
+    fun getTrainingCountsSync(trainingId: Int): TrainingCounts
 }
