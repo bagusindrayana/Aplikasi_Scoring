@@ -107,7 +107,7 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
             //get session_count
             val trainingCount : TrainingCounts = trainingRepository.getTrainingCountsSync(trainingId)
 
-            for (sessionNumber in 1..trainingCount.shot_count){
+            for (sessionNumber in 1..trainingCount.session_count){
                 headers2.add("Rambahan $sessionNumber")
 
             }
