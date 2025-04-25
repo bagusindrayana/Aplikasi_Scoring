@@ -69,7 +69,7 @@
                         android:layout_marginTop="8dp"
                         android:text="Gold Archery Samarinda"
                         android:textSize="14sp"
-                        android:textColor="#80FFFFFF"
+                        android:textColor="@color/gold"
                         android:fontFamily="@font/poppins_bold"
                         android:gravity="center"/>
 
