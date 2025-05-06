@@ -15,6 +15,7 @@ class MainAdapter(
     interface OnItemClickListener {
         fun onItemClick(training: Training)
         fun onDeleteClick(training: Training)
+        fun onClickItem(training: Training)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrainingViewHolder {
@@ -31,7 +32,10 @@ class MainAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(training: Training) {
             binding.tvDate.text = training.date
-            binding.tvDescription.text = training.description
+            val formattedDescription = training.description
+                ?.split(" ")
+                ?.joinToString(" ") { it.replaceFirstChar { c -> c.uppercase() } } ?: ""
+            binding.tvDescription.text = formattedDescription
 
             binding.root.setOnClickListener {
                 listener.onItemClick(training)
@@ -39,6 +43,9 @@ class MainAdapter(
 
             binding.btnDelete.setOnClickListener {
                 listener.onDeleteClick(training)
+            }
+            binding.btnEdit.setOnClickListener {
+                listener.onClickItem(training)
             }
         }
     }

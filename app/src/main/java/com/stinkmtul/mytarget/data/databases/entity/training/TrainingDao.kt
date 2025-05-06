@@ -30,16 +30,21 @@ interface TrainingDao{
         delete(training)
     }
 
+    @Query("SELECT session_count, shot_count FROM Training WHERE training_id = :trainingId")
+    fun getTrainingCountsSync(trainingId: Int): TrainingCounts
+
     @Query("DELETE FROM Training WHERE training_id = :trainingId")
     fun deleteTrainingById(trainingId: Int)
-
 
     @Query("SELECT training_id FROM Training WHERE date = :date AND token = :token LIMIT 1")
     fun getTrainingId(date: String, token: String): LiveData<Int?>
 
-    @Query("SELECT * FROM Training")
+    @Query("SELECT * FROM training ORDER BY training_id DESC")
     fun getAllTraining(): LiveData<List<Training>>
 
     @Query("SELECT session_count, shot_count FROM Training WHERE training_id = :trainingId")
     fun getTrainingCounts(trainingId: Int): LiveData<TrainingCounts>
+
+    @Query("SELECT * FROM training WHERE training_id = :trainingId")
+    fun getTrainingById(trainingId: Int): LiveData<Training>
 }

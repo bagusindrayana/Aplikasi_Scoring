@@ -5,11 +5,15 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface LeaderboardDao{
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(leaderboard: Leaderboard)
+
+    @Update
+    fun update(leaderboard: Leaderboard)
 
     @Query("SELECT * FROM Leaderboard WHERE training_id = :training_id")
     fun getAllLeaderboard(training_id : Int): LiveData<List<Leaderboard>>

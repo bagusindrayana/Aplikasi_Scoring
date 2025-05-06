@@ -91,6 +91,72 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
                 currentRow++
             }
 
+            val sheet2 = workbook.createSheet("Score_$trainingId")
+
+            var currentRow2 = 0
+            val titleRow2 = sheet2.createRow(currentRow2++)
+            val titleCell2 = titleRow2.createCell(0)
+            titleCell2.setCellValue("Score #$trainingId")
+            titleCell2.cellStyle = styles["header"]
+
+            val headerRow2 = sheet2.createRow(currentRow2++)
+            val headers2 = mutableListOf("No", "Nama")
+
+            val trainingCount : TrainingCounts = trainingRepository.getTrainingCountsSync(trainingId)
+
+            for (sessionNumber in 1..trainingCount.session_count){
+                headers2.add("Rambahan $sessionNumber")
+
+            }
+
+            headers2.add("Total")
+
+            headers2.forEachIndexed { index, header ->
+                val cell = headerRow2.createCell(index)
+                cell.setCellValue(header)
+                cell.cellStyle = styles["columnHeader"]
+            }
+
+            var no = 1
+            for (leaderboard in leaderboardEntries) {
+                val newRow = sheet2.createRow(currentRow2++)
+
+                val personId = leaderboard.person_id ?: 0
+                val personName = personRepository.getNamePersonSync(personId)
+                    ?.split(" ")
+                    ?.joinToString(" ") { it.replaceFirstChar { c -> c.uppercase() } }
+                    ?: "Unknown"
+
+                val noCell = newRow.createCell(0)
+                noCell.setCellValue(no.toDouble())
+                noCell.cellStyle = styles["center"]
+
+                val nameCell = newRow.createCell(1)
+                nameCell.setCellValue(personName)
+                nameCell.cellStyle = styles["center"]
+
+                val shots = shotRepository.getShotsForPersonSync(personId, trainingId)
+
+                var totalScore = 0
+                for (sessionNumber in 1..trainingCount.session_count){
+                    var score = 0
+                    for (shootNumber in 1..trainingCount.shot_count){
+                        score += shots.find { shot -> shot.session == sessionNumber && shot.shot_number == shootNumber }?.score ?: 0
+                    }
+                    val sessionCell = newRow.createCell(sessionNumber+1)
+                    sessionCell.setCellValue("${score}")
+                    sessionCell.cellStyle = styles["center"]
+                    totalScore += score
+                }
+
+
+                val totalCell = newRow.createCell(trainingCount.session_count+2)
+                totalCell.setCellValue(totalScore.toDouble())
+                totalCell.cellStyle = styles["center"]
+                no++
+
+            }
+
             val fileName = "Training_${trainingId}_Export.xlsx"
             val file = File(context.getExternalFilesDir(null), fileName)
 
@@ -137,7 +203,12 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
 
         val personHeaderRow = sheet.createRow(currentRow++)
         val personHeaderCell = personHeaderRow.createCell(0)
-        personHeaderCell.setCellValue("Rank #$ranking - $personName")
+        val formattedName = personName
+            ?.split(" ")
+            ?.joinToString(" ") { it.replaceFirstChar { c -> c.uppercase() } }
+            ?: "Unknown"
+
+        personHeaderCell.setCellValue("Rank #$ranking - $formattedName")
         personHeaderCell.cellStyle = styles["header"]
 
         val headerRow = sheet.createRow(currentRow++)
@@ -203,33 +274,9 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
         return currentRow
     }
 
-    /*suspend fun getNamePersonSync(personId: Int): String? {
-        val result = withContext(Dispatchers.IO) {
-            try {
-                val liveData = personRepository.getNamePerson(personId)
-                var name: String? = null
-                val latch = java.util.concurrent.CountDownLatch(1)
-
-                withContext(Dispatchers.Main) {
-                    liveData.observeForever { value ->
-                        name = value
-                        latch.countDown()
-                    }
-                }
-                latch.await(2, java.util.concurrent.TimeUnit.SECONDS)
-                name
-            } catch (e: Exception) {
-                Log.e("DetailViewModel", "Error getting person name", e)
-                null
-            }
-        }
-        return result
-    }*/
-
     private fun createStyles(workbook: XSSFWorkbook): Map<String, XSSFCellStyle> {
         val styles = mutableMapOf<String, XSSFCellStyle>()
 
-        // Style untuk header
         val headerStyle = workbook.createCellStyle()
         val headerFont = workbook.createFont()
         headerFont.bold = true
@@ -238,7 +285,6 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
         headerStyle.alignment = HorizontalAlignment.LEFT
         styles["header"] = headerStyle
 
-        // Style untuk header kolom
         val columnHeaderStyle = workbook.createCellStyle()
         val columnHeaderFont = workbook.createFont()
         columnHeaderFont.bold = true
@@ -249,12 +295,10 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
         columnHeaderStyle.setFont(columnHeaderFont)
         styles["columnHeader"] = columnHeaderStyle
 
-        // Style untuk sel dengan perataan tengah
         val centerStyle = workbook.createCellStyle()
         centerStyle.alignment = HorizontalAlignment.CENTER
         styles["center"] = centerStyle
 
-        // Style untuk Total cell
         val totalCellStyle = workbook.createCellStyle()
         totalCellStyle.alignment = HorizontalAlignment.CENTER
         val totalFont = workbook.createFont()

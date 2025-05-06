@@ -23,6 +23,12 @@ class ShotRepository(application: Application) {
         executorService.execute { mShotDao.insert(shot) }
     }
 
+    fun update(shot: Shot) {
+        executorService.execute {
+            mShotDao.update(shot)
+        }
+    }
+
     fun getShotsForPerson(personId: Int, trainingId: Int): LiveData<List<Shot>> {
         return mShotDao.getShotsForPerson(personId, trainingId)
     }
@@ -36,10 +42,4 @@ class ShotRepository(application: Application) {
             mShotDao.getShotsForPersonSync(personId, trainingId)
         }
     }
-
-    /*suspend fun getDistinctPersonByTrainingSync(trainingId: Int): List<Int> {
-        return withContext(Dispatchers.IO) {
-            mShotDao.getDistinctPersonByTrainingSync(trainingId)
-        }
-    }*/
 }

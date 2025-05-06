@@ -23,6 +23,12 @@ class LeaderboardRepository(application: Application) {
         executorService.execute { mLeaderboardDao.insert(leaderboard) }
     }
 
+    fun update(leaderboard: Leaderboard) {
+        executorService.execute {
+            mLeaderboardDao.update(leaderboard)
+        }
+    }
+
     fun getAllLeaderboard(training_id: Int): LiveData<List<Leaderboard>> = mLeaderboardDao.getAllLeaderboard(training_id)
 
     suspend fun getAllLeaderboardSync(trainingId: Int): List<Leaderboard> {

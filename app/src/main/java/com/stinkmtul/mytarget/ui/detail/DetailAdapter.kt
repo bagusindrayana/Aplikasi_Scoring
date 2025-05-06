@@ -32,7 +32,11 @@ class DetailAdapter(private val viewModel: DetailViewModel) :
 
             item.person_id?.let {
                 viewModel.getNamePerson(it).observeForever { name ->
-                    binding.nameText.text = "${name ?: "Unknown"}"
+                    val formattedName = name
+                        ?.split(" ")
+                        ?.joinToString(" ") { word -> word.replaceFirstChar { c -> c.uppercase() } }
+                        ?: "Unknown"
+                    binding.nameText.text = formattedName
                 }
             }
         }
@@ -50,4 +54,3 @@ class DetailAdapter(private val viewModel: DetailViewModel) :
         }
     }
 }
-

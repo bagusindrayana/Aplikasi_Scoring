@@ -40,7 +40,6 @@
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
-                <!-- Header Card with Event Information -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/event_info_card"
                     android:layout_width="match_parent"
@@ -90,7 +89,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="Latihan Rutin"
                                     android:textColor="@color/white"
-                                    android:textSize="18sp"
+                                    android:textSize="16sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
                         </LinearLayout>
@@ -205,7 +204,6 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Card yang akan digunakan sebagai referensi untuk ScrollView -->
     <androidx.cardview.widget.CardView
         android:id="@+id/card_info"
         android:layout_width="match_parent"
@@ -251,7 +249,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
+
+            <TextView
+                android:id="@+id/autoSaveIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Menyimpan..."
+                android:textColor="#4CAF50"
+                android:background="#DCEDC8"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="16dp"
+                android:visibility="invisible"
+                android:alpha="0"
+                android:textSize="12sp" />
         </LinearLayout>
+
     </ScrollView>
 
     <com.google.android.material.button.MaterialButton

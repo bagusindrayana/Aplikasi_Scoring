@@ -13,11 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.stinkmtul.mytarget.data.databases.entity.training.Training
 import com.stinkmtul.mytarget.databinding.ActivityMainBinding
+import com.stinkmtul.mytarget.ui.data.DataActivity
 import com.stinkmtul.mytarget.ui.detail.DetailActivity
 import com.stinkmtul.mytarget.ui.form.FormActivity
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var fabMain: FloatingActionButton
     private lateinit var fabCustom: FloatingActionButton
     private lateinit var fabNonCustom: FloatingActionButton
@@ -63,6 +63,23 @@ class MainActivity : AppCompatActivity() {
         }*/
     }
 
+    private fun loadDistinctPersons(trainingId: Int) {
+        mainViewModel.getDistinctPersonByTraining(trainingId).observe(this) { personIds ->
+            if (personIds.isNotEmpty()) {
+                Log.d(TAG, "Person IDs yang ikut training: $personIds")
+
+                personIds.forEach { personId ->
+                    mainViewModel.getNamePerson(personId).observe(this) { name ->
+                        Log.d(TAG, "Person ID: $personId, Name: ${name ?: "Nama tidak ditemukan"}")
+                    }
+                }
+            } else {
+                Log.d(TAG, "Tidak ada person untuk training ini")
+            }
+        }
+    }
+
+
     private fun setupRecyclerView() {
         adapter = MainAdapter(object : MainAdapter.OnItemClickListener {
             override fun onItemClick(training: Training) {
@@ -71,10 +88,21 @@ class MainActivity : AppCompatActivity() {
                     putExtra("training_id", training.training_id.toString()) // Kirim sebagai String
                 }
                 startActivity(intent)
+
+                training.training_id?.let { trainingId ->
+                    loadDistinctPersons(trainingId)
+                }
             }
 
             override fun onDeleteClick(training: Training) {
                 showDeleteConfirmationDialog(training)
+            }
+
+            override fun onClickItem(training: Training) {
+                Log.d(TAG, "Edit clicked: ${training.training_id}")
+                training.training_id?.let { trainingId ->
+                    sendPersonsToDataActivity(trainingId, training)
+                }
             }
         })
 
@@ -122,5 +150,53 @@ class MainActivity : AppCompatActivity() {
         fabCustom.visibility = View.GONE
         fabNonCustom.visibility = View.GONE
         isFabOpen = false
+    }
+
+    private fun sendPersonsToDataActivity(trainingId: Int, training: Training) {
+        mainViewModel.getDistinctPersonByTraining(trainingId).observe(this) { personIds ->
+            if (personIds.isNotEmpty()) {
+                val personIdList = mutableListOf<Int>()
+                val nameList = mutableListOf<String>()
+                var counter = 0
+
+                personIds.forEach { personId ->
+                    mainViewModel.getNamePerson(personId).observe(this) { name ->
+                        personIdList.add(personId)
+                        nameList.add(name ?: "Nama tidak ditemukan")
+
+                        counter++
+                        if (counter == personIds.size) {
+                            val idsString = personIdList.joinToString(", ")
+                            val namesString = nameList.joinToString(", ")
+
+                            val intent = Intent(this, DataActivity::class.java).apply {
+                                putExtra("trainingid", trainingId.toString())
+                                putExtra("selected_person_ids", idsString)
+                                putExtra("selected_names", namesString)
+
+                                putExtra("date", training.date ?: "No Date")
+                                putExtra("description", training.description ?: "No Description")
+                                putExtra("session", training.session_count?.toString() ?: "0")
+                                putExtra("score", training.shot_count?.toString() ?: "0")
+                            }
+                            startActivity(intent)
+                        }
+                    }
+                }
+            } else {
+                Toast.makeText(this, "Tidak ada person dalam training ini", Toast.LENGTH_SHORT).show()
+
+                val intent = Intent(this, DataActivity::class.java).apply {
+                    putExtra("trainingid", trainingId.toString())
+                    putExtra("selected_person_ids", "")
+                    putExtra("selected_names", "")
+                    putExtra("date", training.date ?: "No Date")
+                    putExtra("description", training.description ?: "No Description")
+                    putExtra("session", training.session_count?.toString() ?: "0")
+                    putExtra("score", training.shot_count?.toString() ?: "0")
+                }
+                startActivity(intent)
+            }
+        }
     }
 }

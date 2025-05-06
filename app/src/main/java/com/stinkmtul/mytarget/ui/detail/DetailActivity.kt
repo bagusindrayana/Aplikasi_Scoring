@@ -80,8 +80,9 @@ class DetailActivity : AppCompatActivity() {
         Log.d("DetailActivity", "Training ID: $trainingIdInt")
 
         detailViewModel.getLeaderboardByTrainingId(trainingIdInt).observe(this, Observer { leaderboardList ->
-            adapter.submitList(leaderboardList)
-            createTablesBasedOnRanking(leaderboardList, trainingIdInt)
+            val sortedList = leaderboardList.sortedBy { it.the_champion ?: Int.MAX_VALUE }
+            adapter.submitList(sortedList)
+            createTablesBasedOnRanking(sortedList, trainingIdInt)
         })
     }
 
@@ -90,7 +91,7 @@ class DetailActivity : AppCompatActivity() {
 
         val processedPersonIds = HashSet<Int>()
 
-        val sortedLeaderboard = leaderboardList.sortedBy { it.the_champion ?: Int.MAX_VALUE }
+        val sortedLeaderboard = leaderboardList
 
         detailViewModel.getTrainingCounts(trainingIdInt).observe(this) { counts ->
             val sessionCount = counts.session_count
@@ -137,7 +138,6 @@ class DetailActivity : AppCompatActivity() {
                 setMargins(0, 0, 0, 24)
             }
             radius = 16f
-            //cardElevation = 8f
             setCardBackgroundColor(Color.parseColor("#343131"))
         }
 
@@ -151,13 +151,18 @@ class DetailActivity : AppCompatActivity() {
         }
 
         val titleTextView = TextView(this).apply {
-            text = "Rank $ranking - $personName"
+            val formattedName = personName
+                .split(" ")
+                .joinToString(" ") { it.replaceFirstChar { c -> c.uppercase() } }
+
+            text = "Rank $ranking - $formattedName"
             textSize = 18f
             setTextColor(Color.WHITE)
             setTypeface(null, Typeface.BOLD)
             gravity = Gravity.START
             setPadding(8, 8, 8, 16)
         }
+
 
         val scrollView = HorizontalScrollView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
@@ -262,7 +267,7 @@ class DetailActivity : AppCompatActivity() {
             }
 
             val totalTextView = TextView(this).apply {
-                text = "" // Total per sesi
+                text = ""
                 gravity = Gravity.CENTER
                 setTextColor(Color.BLACK)
                 typeface = Typeface.DEFAULT_BOLD
@@ -286,7 +291,7 @@ class DetailActivity : AppCompatActivity() {
             tableRow.addView(totalTextView)
 
             val endTextView = TextView(this).apply {
-                text = "" // Total kumulatif
+                text = ""
                 gravity = Gravity.CENTER
                 setTextColor(Color.BLACK)
                 typeface = Typeface.DEFAULT_BOLD
@@ -312,18 +317,9 @@ class DetailActivity : AppCompatActivity() {
             tableLayout.addView(tableRow)
         }
 
-        /*val divider = View(this).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                2
-            )
-            setBackgroundColor(Color.LTGRAY)
-        }*/
-
         scrollView.addView(tableLayout)
         cardContent.addView(titleTextView)
         cardContent.addView(scrollView)
-        //cardContent.addView(divider)
         cardView.addView(cardContent)
 
         cardView.tag = ranking
@@ -380,6 +376,7 @@ class DetailActivity : AppCompatActivity() {
                             shotTextView.text = "X"
                             shotTextView.setTextColor(Color.parseColor("#D32F2F"))
                             shotTextView.setTypeface(null, Typeface.BOLD)
+                            sessionTotal += 10
                         }
                         "M" -> {
                             shotTextView.text = "M"
@@ -395,27 +392,27 @@ class DetailActivity : AppCompatActivity() {
                                     score >= 5 -> shotTextView.setTextColor(Color.parseColor("#689F38"))
                                     else -> shotTextView.setTextColor(Color.BLACK)
                                 }
+                                sessionTotal += score
                             } else {
                                 shotTextView.text = ""
                             }
                         }
                     }
-
-                    sessionTotal += score
                 }
 
                 val totalTextView = tableRow.getChildAt(tableRow.childCount - 2) as TextView
-                totalTextView.text = sessionTotal.toString()
+                totalTextView.text = if (sessionTotal > 0) sessionTotal.toString() else ""
 
                 if (rowIndex > 1) {
                     val previousTotalTextView = (tableLayout.getChildAt(rowIndex - 1) as TableRow)
                         .getChildAt(tableRow.childCount - 1) as TextView
                     val previousEndTotal = previousTotalTextView.text.toString().toIntOrNull() ?: 0
                     val endTextView = tableRow.getChildAt(tableRow.childCount - 1) as TextView
-                    endTextView.text = (previousEndTotal + sessionTotal).toString()
+                    val currentEndTotal = previousEndTotal + sessionTotal
+                    endTextView.text = if (currentEndTotal > 0) currentEndTotal.toString() else ""
                 } else {
                     val endTextView = tableRow.getChildAt(tableRow.childCount - 1) as TextView
-                    endTextView.text = sessionTotal.toString()
+                    endTextView.text = if (sessionTotal > 0) sessionTotal.toString() else ""
                 }
             }
         }
@@ -442,10 +439,10 @@ class DetailActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val success = detailViewModel.exportTrainingToExcel(this@DetailActivity, trainingId)
             if (success) {
-                Toast.makeText(this@DetailActivity, "Export berhasil", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@DetailActivity, "Export Berhasil", Toast.LENGTH_SHORT).show()
                 openExportedFile(trainingId)
             } else {
-                Toast.makeText(this@DetailActivity, "Export gagal", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@DetailActivity, "Export Gagal", Toast.LENGTH_SHORT).show()
             }
         }
     }

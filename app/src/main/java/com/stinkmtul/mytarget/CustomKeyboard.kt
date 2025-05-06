@@ -35,11 +35,6 @@ class CustomKeyboard @JvmOverloads constructor(
 
         setupButton(R.id.button_x, "X")
         setupButton(R.id.button_m, "M")
-        setupButton(R.id.button_enter, "ENTER")
-
-        findViewById<Button>(R.id.button_backspace).setOnClickListener {
-            listener?.onBackspace()
-        }
     }
 
     private fun setupButton(buttonId: Int, value: String) {

@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.stinkmtul.mytarget.data.databases.entity.leaderboard.Leaderboard
 import com.stinkmtul.mytarget.data.databases.entity.shot.Shot
+import com.stinkmtul.mytarget.data.databases.entity.training.Training
 import com.stinkmtul.mytarget.data.repository.LeaderboardRepository
 import com.stinkmtul.mytarget.data.repository.ShotRepository
 import com.stinkmtul.mytarget.data.repository.TrainingRepository
@@ -18,6 +19,14 @@ class DataViewModel(application: Application) : ViewModel() {
         mShotRepository.insert(shot)
     }
 
+    fun update(shot: Shot) {
+        mShotRepository.update(shot)
+    }
+
+    fun update(leaderboard: Leaderboard) {
+        mLeaderboardRepository.update(leaderboard)
+    }
+
     fun insertLeaderboard(leaderboard: Leaderboard) {
         mLeaderboardRepository.insert(leaderboard)
     }
@@ -28,5 +37,13 @@ class DataViewModel(application: Application) : ViewModel() {
 
     fun getShotsForPerson(personId: Int, trainingId: Int): LiveData<List<Shot>> {
         return mShotRepository.getShotsForPerson(personId, trainingId)
+    }
+
+    fun getTrainingById(trainingId: Int): LiveData<Training> {
+        return mTrainingRepository.getTrainingById(trainingId)
+    }
+
+    suspend fun getAllLeaderboardSync(trainingId: Int): List<Leaderboard> {
+        return mLeaderboardRepository.getAllLeaderboardSync(trainingId)
     }
 }
