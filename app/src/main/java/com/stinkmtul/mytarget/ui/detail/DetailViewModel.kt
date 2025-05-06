@@ -91,10 +91,7 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
                 currentRow++
             }
 
-<<<<<<< HEAD
-=======
             //sheet 2
->>>>>>> 5738cb5dc0488deb19cb65e29d286d9f20c5f787
             val sheet2 = workbook.createSheet("Score_$trainingId")
 
             var currentRow2 = 0
@@ -103,17 +100,11 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
             titleCell2.setCellValue("Score #$trainingId")
             titleCell2.cellStyle = styles["header"]
 
-<<<<<<< HEAD
-            val headerRow2 = sheet2.createRow(currentRow2++)
-            val headers2 = mutableListOf("No", "Nama")
-
-=======
             //table header
             val headerRow2 = sheet2.createRow(currentRow2++)
             val headers2 = mutableListOf("No", "Nama")
 
             //get session_count
->>>>>>> 5738cb5dc0488deb19cb65e29d286d9f20c5f787
             val trainingCount : TrainingCounts = trainingRepository.getTrainingCountsSync(trainingId)
 
             for (sessionNumber in 1..trainingCount.session_count){
@@ -134,15 +125,10 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
                 val newRow = sheet2.createRow(currentRow2++)
 
                 val personId = leaderboard.person_id ?: 0
-<<<<<<< HEAD
                 val personName = personRepository.getNamePersonSync(personId)
                     ?.split(" ")
                     ?.joinToString(" ") { it.replaceFirstChar { c -> c.uppercase() } }
                     ?: "Unknown"
-=======
-                val personName = personRepository.getNamePersonSync(personId) ?: "Unknown"
->>>>>>> 5738cb5dc0488deb19cb65e29d286d9f20c5f787
-
                 val noCell = newRow.createCell(0)
                 noCell.setCellValue(no.toDouble())
                 noCell.cellStyle = styles["center"]

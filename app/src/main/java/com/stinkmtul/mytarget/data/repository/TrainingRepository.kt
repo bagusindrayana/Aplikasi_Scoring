@@ -48,20 +48,13 @@ class TrainingRepository(application: Application) {
         }
     }
 
-<<<<<<< HEAD
     fun getTrainingById(trainingId: Int): LiveData<Training> {
         return mTrainingDao.getTrainingById(trainingId)
     }
 
-=======
->>>>>>> 5738cb5dc0488deb19cb65e29d286d9f20c5f787
     suspend fun getTrainingCountsSync(trainingId: Int): TrainingCounts {
         return withContext(Dispatchers.IO) {
             mTrainingDao.getTrainingCountsSync(trainingId)
         }
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 5738cb5dc0488deb19cb65e29d286d9f20c5f787
 }
