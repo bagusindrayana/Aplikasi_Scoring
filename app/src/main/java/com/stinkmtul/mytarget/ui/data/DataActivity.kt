@@ -893,8 +893,10 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
             return
         }
 
-        val intent = Intent(this@DataActivity, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(intent)
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Konfirmasi")
+            .setMessage("Silahkan tekan tombol SIMPAN untuk menyimpan perubahan Anda")
+            .setPositiveButton("Ok", null)
+            .show()
     }
 }

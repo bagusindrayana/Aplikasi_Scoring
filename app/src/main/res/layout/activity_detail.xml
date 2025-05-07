@@ -7,6 +7,38 @@
     android:layout_height="match_parent"
     tools:context=".ui.detail.DetailActivity">
 
+    <LinearLayout
+        android:id="@+id/tvEmptyData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/logoo"
+            android:layout_width="120dp"
+            android:layout_height="200dp"
+            android:alpha="0.7"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo_aplikasimentah" />
+
+        <TextView
+            android:id="@+id/textOnImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:text="Skor belum diinput, silahkan input skor untuk masing-masing peserta"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"/>
+    </LinearLayout>
+
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -74,6 +106,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/detailCardView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"

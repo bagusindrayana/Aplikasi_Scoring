@@ -13,6 +13,7 @@ import android.os.Environment
 import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
+import android.view.View
 import android.widget.Button
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
@@ -44,6 +45,9 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var container: LinearLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: DetailAdapter
+    private lateinit var tvEmptyData: LinearLayout
+    private lateinit var exportCardView: androidx.cardview.widget.CardView
+    private lateinit var detailCardView: androidx.cardview.widget.CardView
     private var currentTrainingId: Int = 0
 
     companion object {
@@ -63,6 +67,10 @@ class DetailActivity : AppCompatActivity() {
         container = findViewById(R.id.container)
         container.removeAllViews()
 
+        tvEmptyData = findViewById(R.id.tvEmptyData)
+        exportCardView = findViewById(R.id.exportCardView)
+        detailCardView = findViewById(R.id.detailCardView)
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -80,10 +88,27 @@ class DetailActivity : AppCompatActivity() {
         Log.d("DetailActivity", "Training ID: $trainingIdInt")
 
         detailViewModel.getLeaderboardByTrainingId(trainingIdInt).observe(this, Observer { leaderboardList ->
-            val sortedList = leaderboardList.sortedBy { it.the_champion ?: Int.MAX_VALUE }
-            adapter.submitList(sortedList)
-            createTablesBasedOnRanking(sortedList, trainingIdInt)
+            if (leaderboardList.isEmpty()) {
+                showEmptyState()
+            } else {
+                hideEmptyState()
+                val sortedList = leaderboardList.sortedBy { it.the_champion ?: Int.MAX_VALUE }
+                adapter.submitList(sortedList)
+                createTablesBasedOnRanking(sortedList, trainingIdInt)
+            }
         })
+    }
+
+    private fun showEmptyState() {
+        tvEmptyData.visibility = View.VISIBLE
+        exportCardView.visibility = View.GONE
+        detailCardView.visibility = View.GONE
+    }
+
+    private fun hideEmptyState() {
+        tvEmptyData.visibility = View.GONE
+        exportCardView.visibility = View.VISIBLE
+        detailCardView.visibility = View.VISIBLE
     }
 
     private fun createTablesBasedOnRanking(leaderboardList: List<Leaderboard>, trainingIdInt: Int) {
