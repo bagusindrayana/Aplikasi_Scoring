@@ -78,6 +78,9 @@ data class ShotData(
 
 class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
 
+    private var hasUnsavedChanges = false
+    private var isNewData = false
+
     private var trainingIdInt: Int = 0
     private var currentEditText: EditText? = null
     private lateinit var customKeyboard: CustomKeyboard
@@ -177,11 +180,21 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
 
                 if (existingShots.size == selectedPersonIds.size) {
                     allDataLoaded = true
+
+                    var totalShots = 0
+                    existingShots.forEach { (_, shots) -> totalShots += shots.size }
+                    isNewData = totalShots == 0
+
+                    if (isNewData) {
+                        hasUnsavedChanges = true
+                    }
+
                     createTablesWithData(selectedNames, selectedPersonIds, session, score)
                 }
             }
         }
     }
+
 
     private fun createTablesWithData(
         selectedNames: List<String>,
@@ -507,6 +520,7 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
                     }
 
                     if (scoreValue != -1) {
+                        hasUnsavedChanges = true
                         val sessionKey = Pair(personId, session)
                         val sessionShots = shotsPerSession.getOrPut(sessionKey) { mutableListOf() }
 
@@ -653,7 +667,7 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
                         )
                         dataViewModel.update(updatedTotalShot)
                         countSaved++
-                    } else if (totalScore > 0) {
+                    } else {
                         val newTotalShot = Shot(
                             session = i,
                             shot_number = shots + 1,
@@ -684,7 +698,7 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
                         )
                         dataViewModel.update(updatedEndShot)
                         countSaved++
-                    } else if (endScore > 0) {
+                    } else {
                         val newEndShot = Shot(
                             session = i,
                             shot_number = shots + 2,
@@ -734,6 +748,8 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
                     }
                 }
             }
+            hasUnsavedChanges = false
+            isNewData = false
 
             Toast.makeText(this, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
             showRankings()
@@ -777,7 +793,6 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
             }
         }
 
-        // Log sorted rankings for verification
         playerRankings.forEachIndexed { index, (personId, score, xCount) ->
             val name = nameMapping[personId] ?: "Unknown"
             Log.d("Ranking", "Rank ${index+1}: Person: $name (ID: $personId), Score: $score, X Count: $xCount")
@@ -893,10 +908,20 @@ class DataActivity : AppCompatActivity(), CustomKeyboard.KeyboardListener {
             return
         }
 
-        androidx.appcompat.app.AlertDialog.Builder(this)
-            .setTitle("Konfirmasi")
-            .setMessage("Silahkan tekan tombol SIMPAN untuk menyimpan perubahan Anda")
-            .setPositiveButton("Ok", null)
-            .show()
+        if (hasUnsavedChanges || isNewData) {
+            val message = if (isNewData) {
+                "Data tabel belum disimpan. Silahkan tekan tombol SIMPAN untuk menyimpan data."
+            } else {
+                "Silahkan tekan tombol SIMPAN untuk menyimpan perubahan Anda"
+            }
+
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Konfirmasi")
+                .setMessage(message)
+                .setPositiveButton("Ok", null)
+                .show()
+        } else {
+            super.onBackPressed()
+        }
     }
 }

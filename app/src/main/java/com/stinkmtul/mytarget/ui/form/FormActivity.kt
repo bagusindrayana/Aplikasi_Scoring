@@ -109,7 +109,11 @@ class FormActivity : AppCompatActivity() {
 
     private fun updateSelectedNamesUI() {
         binding.selectedNames.text = if (selectedItems.isNotEmpty()) {
-            selectedItems.joinToString(", ")
+            selectedItems.joinToString(", ") { name ->
+                name.split(" ").joinToString(" ") { word ->
+                    word.replaceFirstChar { it.uppercase() }
+                }
+            }
         } else {
             "Tidak ada nama yang dipilih"
         }
