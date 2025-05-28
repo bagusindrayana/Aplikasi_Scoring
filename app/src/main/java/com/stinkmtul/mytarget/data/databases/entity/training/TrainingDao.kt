@@ -30,6 +30,11 @@ interface TrainingDao{
         delete(training)
     }
 
+    @Transaction
+    fun deleteShotData(trainingId: Int) {
+        deleteShotByTrainingId(trainingId)
+    }
+
     @Query("DELETE FROM Training WHERE training_id = :trainingId")
     fun deleteTrainingById(trainingId: Int)
 

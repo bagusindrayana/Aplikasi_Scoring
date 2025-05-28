@@ -15,6 +15,10 @@ interface ShotDao{
     @Update
     fun update(shot: Shot)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(shots: List<Shot>)
+
+
     @Query("SELECT * FROM shot WHERE person_id = :personId AND training_id = :trainingId")
     fun getShotsForPerson(personId: Int, trainingId: Int): LiveData<List<Shot>>
 

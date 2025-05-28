@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.stinkmtul.mytarget.R
 import com.stinkmtul.mytarget.data.databases.entity.leaderboard.Leaderboard
+import com.stinkmtul.mytarget.data.databases.entity.training.Training
 import com.stinkmtul.mytarget.ui.detail.adapter.DetailAdapter
 import com.stinkmtul.mytarget.ui.home.MainActivity
 import com.stinkmtul.mytarget.viewmodel.DetailViewModel
@@ -49,6 +50,7 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var exportCardView: androidx.cardview.widget.CardView
     private lateinit var detailCardView: androidx.cardview.widget.CardView
     private var currentTrainingId: Int = 0
+    private lateinit var trainingData: Training
 
     companion object {
         private const val STORAGE_PERMISSION_CODE = 1001
@@ -87,15 +89,18 @@ class DetailActivity : AppCompatActivity() {
 
         Log.d("DetailActivity", "Training ID: $trainingIdInt")
 
-        detailViewModel.getLeaderboardByTrainingId(trainingIdInt).observe(this, Observer { leaderboardList ->
-            if (leaderboardList.isEmpty()) {
-                showEmptyState()
-            } else {
-                hideEmptyState()
-                val sortedList = leaderboardList.sortedBy { it.the_champion ?: Int.MAX_VALUE }
-                adapter.submitList(sortedList)
-                createTablesBasedOnRanking(sortedList, trainingIdInt)
-            }
+        detailViewModel.getTrainingById(trainingIdInt).observe(this, Observer { training ->
+            trainingData = training
+            detailViewModel.getLeaderboardByTrainingId(trainingIdInt).observe(this, Observer { leaderboardList ->
+                if (leaderboardList.isEmpty()) {
+                    showEmptyState()
+                } else {
+                    hideEmptyState()
+                    val sortedList = leaderboardList.sortedBy { it.the_champion ?: Int.MAX_VALUE }
+                    adapter.submitList(sortedList)
+                    createTablesBasedOnRanking(sortedList, trainingIdInt)
+                }
+            })
         })
     }
 
@@ -462,7 +467,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun performExport(trainingId: Int) {
         lifecycleScope.launch {
-            val success = detailViewModel.exportTrainingToExcel(this@DetailActivity, trainingId)
+            val success = detailViewModel.exportTrainingToExcel(this@DetailActivity, trainingData)
             if (success) {
                 Toast.makeText(this@DetailActivity, "Export Berhasil", Toast.LENGTH_SHORT).show()
                 openExportedFile(trainingId)

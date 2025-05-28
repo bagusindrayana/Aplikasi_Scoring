@@ -2,6 +2,7 @@ package com.stinkmtul.mytarget.data.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.room.Transaction
 import com.stinkmtul.mytarget.data.databases.MyArcheryRoomDatabase
 import com.stinkmtul.mytarget.data.databases.entity.training.Training
 import com.stinkmtul.mytarget.data.databases.entity.training.TrainingDao
@@ -45,6 +46,12 @@ class TrainingRepository(application: Application) {
     fun deleteTrainingById(trainingId: Int) {
         executorService.execute {
             mTrainingDao.deleteTrainingById(trainingId)
+        }
+    }
+
+    fun deleteShotData(trainingId: Int) {
+        executorService.execute {
+            mTrainingDao.deleteShotData(trainingId)
         }
     }
 

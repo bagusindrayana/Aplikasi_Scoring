@@ -153,50 +153,61 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun sendPersonsToDataActivity(trainingId: Int, training: Training) {
-        mainViewModel.getDistinctPersonByTraining(trainingId).observe(this) { personIds ->
-            if (personIds.isNotEmpty()) {
-                val personIdList = mutableListOf<Int>()
-                val nameList = mutableListOf<String>()
-                var counter = 0
+        val intent = Intent(this, DataActivity::class.java).apply {
+            putExtra("trainingid", trainingId.toString())
+//            putExtra("selected_person_ids", idsString)
+//            putExtra("selected_names", namesString)
 
-                personIds.forEach { personId ->
-                    mainViewModel.getNamePerson(personId).observe(this) { name ->
-                        personIdList.add(personId)
-                        nameList.add(name ?: "Nama tidak ditemukan")
-
-                        counter++
-                        if (counter == personIds.size) {
-                            val idsString = personIdList.joinToString(", ")
-                            val namesString = nameList.joinToString(", ")
-
-                            val intent = Intent(this, DataActivity::class.java).apply {
-                                putExtra("trainingid", trainingId.toString())
-                                putExtra("selected_person_ids", idsString)
-                                putExtra("selected_names", namesString)
-
-                                putExtra("date", training.date ?: "No Date")
-                                putExtra("description", training.description ?: "No Description")
-                                putExtra("session", training.session_count?.toString() ?: "0")
-                                putExtra("score", training.shot_count?.toString() ?: "0")
-                            }
-                            startActivity(intent)
-                        }
-                    }
-                }
-            } else {
-                Toast.makeText(this, "Tidak ada person dalam training ini", Toast.LENGTH_SHORT).show()
-
-                val intent = Intent(this, DataActivity::class.java).apply {
-                    putExtra("trainingid", trainingId.toString())
-                    putExtra("selected_person_ids", "")
-                    putExtra("selected_names", "")
-                    putExtra("date", training.date ?: "No Date")
-                    putExtra("description", training.description ?: "No Description")
-                    putExtra("session", training.session_count?.toString() ?: "0")
-                    putExtra("score", training.shot_count?.toString() ?: "0")
-                }
-                startActivity(intent)
-            }
+            putExtra("date", training.date ?: "No Date")
+            putExtra("description", training.description ?: "No Description")
+            putExtra("session", training.session_count?.toString() ?: "0")
+            putExtra("score", training.shot_count?.toString() ?: "0")
         }
+        startActivity(intent)
+//        mainViewModel.getDistinctPersonByTraining(trainingId).observe(this) { personIds ->
+//            if (personIds.isNotEmpty()) {
+//                val personIdList = mutableListOf<Int>()
+//                val nameList = mutableListOf<String>()
+//                var counter = 0
+//
+//                personIds.forEach { personId ->
+//                    mainViewModel.getNamePerson(personId).observe(this) { name ->
+//                        personIdList.add(personId)
+//                        nameList.add(name ?: "Nama tidak ditemukan")
+//
+//                        counter++
+//                        if (counter == personIds.size) {
+//                            val idsString = personIdList.joinToString(", ")
+//                            val namesString = nameList.joinToString(", ")
+//
+//                            val intent = Intent(this, DataActivity::class.java).apply {
+//                                putExtra("trainingid", trainingId.toString())
+//                                putExtra("selected_person_ids", idsString)
+//                                putExtra("selected_names", namesString)
+//
+//                                putExtra("date", training.date ?: "No Date")
+//                                putExtra("description", training.description ?: "No Description")
+//                                putExtra("session", training.session_count?.toString() ?: "0")
+//                                putExtra("score", training.shot_count?.toString() ?: "0")
+//                            }
+//                            startActivity(intent)
+//                        }
+//                    }
+//                }
+//            } else {
+//                Toast.makeText(this, "Tidak ada person dalam training ini", Toast.LENGTH_SHORT).show()
+//
+//                val intent = Intent(this, DataActivity::class.java).apply {
+//                    putExtra("trainingid", trainingId.toString())
+//                    putExtra("selected_person_ids", "")
+//                    putExtra("selected_names", "")
+//                    putExtra("date", training.date ?: "No Date")
+//                    putExtra("description", training.description ?: "No Description")
+//                    putExtra("session", training.session_count?.toString() ?: "0")
+//                    putExtra("score", training.shot_count?.toString() ?: "0")
+//                }
+//                startActivity(intent)
+//            }
+//        }
     }
 }

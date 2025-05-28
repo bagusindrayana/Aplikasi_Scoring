@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.stinkmtul.mytarget.data.databases.entity.leaderboard.Leaderboard
 import com.stinkmtul.mytarget.data.databases.entity.shot.Shot
+import com.stinkmtul.mytarget.data.databases.entity.training.Training
 import com.stinkmtul.mytarget.data.repository.LeaderboardRepository
 import com.stinkmtul.mytarget.data.repository.PersonRepository
 import com.stinkmtul.mytarget.data.repository.ShotRepository
@@ -50,23 +51,23 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
 
     suspend fun exportTrainingToExcel(
         context: Context,
-        trainingId: Int
+        training: Training
     ): Boolean = withContext(Dispatchers.IO) {
         try {
-            val leaderboardEntries = leaderboardRepository.getAllLeaderboardSync(trainingId)
+            val leaderboardEntries = leaderboardRepository.getAllLeaderboardSync(training.training_id)
 
             if (leaderboardEntries.isEmpty()) {
                 return@withContext false
             }
 
             val workbook = XSSFWorkbook()
-            val sheet = workbook.createSheet("Training_$trainingId")
+            val sheet = workbook.createSheet("Training_${training.training_id}")
             val styles = createStyles(workbook)
             var currentRow = 0
 
             val titleRow = sheet.createRow(currentRow++)
             val titleCell = titleRow.createCell(0)
-            titleCell.setCellValue("Training #$trainingId - Leaderboard Export")
+            titleCell.setCellValue("#${training.description} - Leaderboard Export")
             titleCell.cellStyle = styles["header"]
 
             currentRow++
@@ -77,7 +78,7 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
 
                 val personName = personRepository.getNamePersonSync(personId) ?: "Unknown"
 
-                val shots = shotRepository.getShotsForPersonSync(personId, trainingId)
+                val shots = shotRepository.getShotsForPersonSync(personId, training.training_id)
 
                 currentRow = createTableForPerson(
                     sheet,
@@ -92,12 +93,12 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
             }
 
             //sheet 2
-            val sheet2 = workbook.createSheet("Score_$trainingId")
+            val sheet2 = workbook.createSheet("Score_${training.training_id}")
 
             var currentRow2 = 0
             val titleRow2 = sheet2.createRow(currentRow2++)
             val titleCell2 = titleRow2.createCell(0)
-            titleCell2.setCellValue("Score #$trainingId")
+            titleCell2.setCellValue("Score #${training.description}")
             titleCell2.cellStyle = styles["header"]
 
             //table header
@@ -105,7 +106,7 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
             val headers2 = mutableListOf("No", "Nama")
 
             //get session_count
-            val trainingCount : TrainingCounts = trainingRepository.getTrainingCountsSync(trainingId)
+            val trainingCount : TrainingCounts = trainingRepository.getTrainingCountsSync(training.training_id)
 
             for (sessionNumber in 1..trainingCount.session_count){
                 headers2.add("Rambahan $sessionNumber")
@@ -137,7 +138,7 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
                 nameCell.setCellValue(personName)
                 nameCell.cellStyle = styles["center"]
 
-                val shots = shotRepository.getShotsForPersonSync(personId, trainingId)
+                val shots = shotRepository.getShotsForPersonSync(personId, training.training_id)
 
                 var totalScore = 0
                 for (sessionNumber in 1..trainingCount.session_count){
@@ -159,7 +160,7 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
 
             }
 
-            val fileName = "Training_${trainingId}_Export.xlsx"
+            val fileName = "Training_${training.training_id}_Export.xlsx"
             val file = File(context.getExternalFilesDir(null), fileName)
 
             if (file.exists()) {
@@ -316,5 +317,9 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
         styles["endCell"] = endCellStyle
 
         return styles
+    }
+
+    fun getTrainingById(trainingId: Int) : LiveData<Training> {
+        return trainingRepository.getTrainingById(trainingId)
     }
 }

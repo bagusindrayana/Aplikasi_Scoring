@@ -29,6 +29,10 @@ class ShotRepository(application: Application) {
         }
     }
 
+    fun insertAll(shots: List<Shot>) {
+        executorService.execute { mShotDao.insertAll(shots) }
+    }
+
     fun getShotsForPerson(personId: Int, trainingId: Int): LiveData<List<Shot>> {
         return mShotDao.getShotsForPerson(personId, trainingId)
     }

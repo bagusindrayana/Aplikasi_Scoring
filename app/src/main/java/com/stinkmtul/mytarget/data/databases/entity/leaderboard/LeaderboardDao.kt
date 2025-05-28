@@ -12,8 +12,16 @@ interface LeaderboardDao{
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(leaderboard: Leaderboard)
 
+
     @Update
     fun update(leaderboard: Leaderboard)
+
+    @Insert
+    fun insertAll(leaderboards: List<Leaderboard>)
+
+
+    @Update
+    fun updateAll(leaderboards: List<Leaderboard>)
 
     @Query("SELECT * FROM Leaderboard WHERE training_id = :training_id")
     fun getAllLeaderboard(training_id : Int): LiveData<List<Leaderboard>>
